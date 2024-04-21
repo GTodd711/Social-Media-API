@@ -1,0 +1,14 @@
+[
+    {
+      "username": "john_doe",
+      "email": "john.doe@example.com",
+      "thoughts": [],
+      "friends": []
+    },
+    {
+      "username": "jane_smith",
+      "email": "jane.smith@example.com",
+      "thoughts": [],
+      "friends": []
+    }
+  ]

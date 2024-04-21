@@ -51,4 +51,51 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Add a friend to a user's friend list
+router.post('/:userId/friends/:friendId', async (req, res) => {
+  try {
+    const { friendId } = req.params;
+    const user = await User.findById(req.params.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (user.friends.includes(friendId)) {
+      return res.status(400).json({ message: 'Friend already added' });
+    }
+
+    user.friends.push(friendId);
+    await user.save();
+
+    res.status(201).json(user);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+// Remove a friend from a user's friend list
+router.delete('/:userId/friends/:friendId', async (req, res) => {
+  try {
+    const { friendId } = req.params;
+    const user = await User.findById(req.params.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (!user.friends.includes(friendId)) {
+      return res.status(400).json({ message: 'Friend not found' });
+    }
+
+    user.friends = user.friends.filter((id) => id.toString() !== friendId);
+    await user.save();
+
+    res.sendStatus(204);
+  } catch (err) {
+    res.status(400).json(err);
+  }
+});
+
+
 module.exports = router;

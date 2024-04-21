@@ -1,0 +1,23 @@
+{
+    "name": "social-network-api",
+    "version": "1.0.0",
+    "description": "A social network API using Express.js and Mongoose",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js"
+    },
+    "keywords": [
+      "social",
+      "network",
+      "api",
+      "express",
+      "mongoose"
+    ],
+    "author": "Gavin",
+    "license": "MIT",
+    "dependencies": {
+      "express": "^4.17.2",
+      "mongoose": "^6.0.8"
+    }
+  }
+  

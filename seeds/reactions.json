@@ -1,0 +1,12 @@
+[
+    {
+      "reactionBody": "Nice thought!",
+      "username": "jane_smith",
+      "thoughtId": "<Replace with valid Thought ID>"
+    },
+    {
+      "reactionBody": "I agree!",
+      "username": "john_doe",
+      "thoughtId": "<Replace with valid Thought ID>"
+    }
+  ]

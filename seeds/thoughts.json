@@ -1,0 +1,12 @@
+[
+    {
+      "thoughtText": "Hello, world!",
+      "username": "john_doe",
+      "reactions": []
+    },
+    {
+      "thoughtText": "Testing the API endpoints",
+      "username": "jane_smith",
+      "reactions": []
+    }
+  ]
