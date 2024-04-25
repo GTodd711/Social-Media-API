@@ -48,11 +48,16 @@ router.delete('/:id', async (req, res) => {
     if (!deletedUser) {
       return res.status(404).json({ message: 'User not found' });
     }
+
+    // Trigger the pre-hook to delete associated thoughts
+    await deletedUser.remove();
+
     res.sendStatus(204);
   } catch (err) {
     res.status(400).json(err);
   }
 });
+
 
 // Add a friend to a user's friend list
 router.post('/:userId/friends/:friendId', async (req, res) => {
