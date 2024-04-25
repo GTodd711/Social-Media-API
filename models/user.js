@@ -18,4 +18,20 @@ userSchema.virtual('friendCount').get(function () {
 
 const User = mongoose.model('User', userSchema);
 
+// pre-hook to delete associated thoughts
+userSchema.pre('remove', async function (next) {
+  try {
+    const user = this;
+
+    // Delete the user's associated thoughts
+    await mongoose.model('Thought').deleteMany({ username: user.username });
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+
+
 module.exports = User;
