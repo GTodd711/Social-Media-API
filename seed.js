@@ -31,7 +31,24 @@ db.once('open', () => {
       console.error('Error seeding users:', err);
     }
   };
+// Function to drop the database and repopulate it
+  // Function to drop the database, seed data, and close connection
+async function resetAndSeedDatabase() {
+  try {
+    // Drop the entire database
+    await mongoose.connection.dropDatabase();
+    console.log('Database dropped successfully');
 
+    // Repopulate the database by seeding
+    await seedDatabase();
+    console.log('Database repopulated successfully');
+  } catch (err) {
+    console.error('Error resetting and seeding database:', err);
+  } finally {
+    // Close the database connection
+    await mongoose.connection.close();
+  }
+}
   // Function to seed thoughts
   const seedThoughts = async () => {
     try {
@@ -63,5 +80,5 @@ db.once('open', () => {
   };
 
   // Call the seeding function
-  seedDatabase();
+  resetAndSeedDatabase();
 });
