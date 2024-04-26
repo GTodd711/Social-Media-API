@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const User = require('./models/user');
 const Thought = require('./models/thought');
-const Reaction = require('./models/reaction');
+const Reaction = Thought.schema.path('reactions').schema;
 const userData = require('./seeds/user.json');
 const thoughtData = require('./seeds/thoughts.json');
 const reactionData = require('./seeds/reactions.json');
