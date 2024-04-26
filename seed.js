@@ -3,16 +3,14 @@ const mongoose = require('mongoose');
 const User = require('./models/user');
 const Thought = require('./models/thought');
 const Reaction = Thought.schema.path('reactions').schema;
-const userData = require('./seeds/user.json');
-const thoughtData = require('./seeds/thoughts.json');
-const reactionData = require('./seeds/reactions.json');
+const userData = require('./seeds/userseed');
+const thoughtData = require('./seeds/thoughtseed');
+const reactionData = require('./seeds/reactionseed');
 
-const mongoURI = `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}:27017/mydatabase`;
-
-console.log('MongoDB URI:', mongoURI);
+const uri = process.env.MONGODB_URI;
 
 // Connect to MongoDB
-mongoose.connect(mongoURI, {
+mongoose.connect(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -48,11 +46,11 @@ db.once('open', () => {
   // Function to seed reactions
   const seedReactions = async () => {
     try {
-      await Reaction.deleteMany(); // Clear existing data
-      await Reaction.insertMany(reactionData); // Insert new data
-      console.log('Reactions seeded successfully');
+      // Clear all reactions in thoughts
+      await Thought.updateMany({}, { reactions: [] });
+      console.log('Reactions cleared successfully');
     } catch (err) {
-      console.error('Error seeding reactions:', err);
+      console.error('Error clearing reactions:', err);
     }
   };
 

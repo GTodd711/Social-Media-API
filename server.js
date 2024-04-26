@@ -1,3 +1,5 @@
+require('dotenv').config();
+const uri = process.env.MONGODB_URI;
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
@@ -10,11 +12,16 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost/social_network_db', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.set('strictQuery', false);
+
+// Connect to MongoDB using uri
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('MongoDB connected successfully');
+  })
+  .catch((error) => {
+    console.error('MongoDB connection error:', error);
+  });
 
 // Routes
 app.use('/api/users', userRoutes);

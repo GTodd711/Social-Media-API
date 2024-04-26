@@ -1,17 +1,19 @@
 const router = require('express').Router();
-const { Thought, Reaction } = require('../models/thought.js');
+const mongoose = require('mongoose');
+const  Thought  = require('../models/thought'); // Import Thought model
 
 // Create a reaction for a thought
 router.post('/:thoughtId', async (req, res) => {
   try {
-    const { username, reactionBody } = req.body;
-    const newReaction = await Reaction.create({ username, reactionBody });
 
+    
     // Update thought's reactions array
-    await Thought.findByIdAndUpdate(req.params.thoughtId, { $push: { reactions: newReaction._id } });
+    const newReaction = await Thought.findByIdAndUpdate(req.params.thoughtId, { $addToSet: { reactions: req.body } },{ new: true });
 
+    console.log('New reaction created:', newReaction);
     res.status(201).json(newReaction);
   } catch (err) {
+    console.error('Error creating new reaction:', err);
     res.status(400).json(err);
   }
 });
@@ -19,13 +21,12 @@ router.post('/:thoughtId', async (req, res) => {
 // Delete a reaction by ID
 router.delete('/:id', async (req, res) => {
   try {
-    const deletedReaction = await Reaction.findByIdAndDelete(req.params.id);
+    const deletedReaction = await Thought.findOneAndUpdate( {reactionId:req.params.id},{$pull:{reactions: req.params.id}});
 
-    // Remove reaction ID from associated thought's reactions array
-    await Thought.findByIdAndUpdate(deletedReaction.thoughtId, { $pull: { reactions: req.params.id } });
-
+    console.log('Reaction deleted successfully');
     res.sendStatus(204);
   } catch (err) {
+    console.error('Error deleting reaction:', err);
     res.status(400).json(err);
   }
 });
